@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Project2</string>
-    <strings-array name="workouts">
+    <string-array name="workouts">
         <item>Cardio</item>
         <item>Weight Lifting</item>
         <item>Swimming</item>
-    </strings-array>
+    </string-array>
 </resources>
