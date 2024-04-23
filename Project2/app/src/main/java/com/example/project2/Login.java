@@ -11,6 +11,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
 public class Login extends AppCompatActivity {
     Button login;
 
@@ -28,9 +30,13 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Launch CreateAccountActivity
-                Intent intent = new Intent(Login.this, Summary.class);
-                startActivity(intent);
+                EditText user=(EditText)findViewById(R.id.editText2);
+                String username=user.getText().toString();
+                EditText password=(EditText)findViewById(R.id.editText1);
+                String pass=password.getText().toString();
+                    // Launch CreateAccountActivity
+                    Intent intent = new Intent(Login.this, Summary.class);
+                    startActivity(intent);
             }
         });
     }
