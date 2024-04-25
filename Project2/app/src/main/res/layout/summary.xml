@@ -42,4 +42,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         android:entries="@array/workouts"/>
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="353dp"
+        android:layout_height="198dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="29dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        android:background=""/>
 </androidx.constraintlayout.widget.ConstraintLayout>
