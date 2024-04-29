@@ -2,6 +2,10 @@
     <string name="app_name">Project2</string>
     <string name="account_summary">Account Summary</string>
     <string name="update_data">Update Data</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log In</string>
+    <string name="image_of_two_women_exercising">Image of two women exercising</string>
     <string-array name="workouts">
         <item>Cardio</item>
         <item>Weight Lifting</item>
