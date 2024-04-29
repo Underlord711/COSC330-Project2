@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Project2</string>
+    <string name="account_summary">Account Summary</string>
+    <string name="update_data">Update Data</string>
     <string-array name="workouts">
         <item>Cardio</item>
         <item>Weight Lifting</item>
