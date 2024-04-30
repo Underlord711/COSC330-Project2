@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
-import java.util.Date;
-
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -19,11 +17,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Locale;
 
- public class Update extends AppCompatActivity {
+public class Update extends AppCompatActivity {
     CalendarView date;
     Button update;
+    FirebaseAuth mAuth;
+    FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +42,10 @@ import java.util.Locale;
 
         update = findViewById(R.id.button3);
         date = findViewById(R.id.calendarView4);
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users");
 
-        // Set a listener to get the selected date
+        myRef.setValue("Hello, World!");
         // Set a listener to get the selected date
 
         date.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -51,7 +57,7 @@ import java.util.Locale;
             }
         });
         update.setOnClickListener(new View.OnClickListener() {
-            @Override
+             @Override
             public void onClick(View v) {
                 // Launch CreateAccountActivity
                 Intent intent = new Intent(Update.this, Summary.class);
@@ -59,11 +65,18 @@ import java.util.Locale;
             }
         });
     }
-     private String formatDate(int year, int month, int dayOfMonth) {
-         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-         Calendar calendar = Calendar.getInstance();
-         calendar.set(year, month, dayOfMonth);
-         return sdf.format(calendar.getTime());
-     }
- }
+
+    private String formatDate(int year, int month, int dayOfMonth) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, dayOfMonth);
+        return sdf.format(calendar.getTime());
+    }
+
+//    public void writeNewUser(String userId, String name, String email) {
+//        User user = new User(name, email);
+//
+//        mDatabase.child("users").child(userId).setValue(user);
+//    }
+}
 
