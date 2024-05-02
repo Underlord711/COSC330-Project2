@@ -93,4 +93,16 @@
         android:visibility="invisible"
         android:enabled="false" />
 
+    <Button
+        android:id="@+id/push"
+        android:layout_width="150dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="119dp"
+        android:layout_marginTop="14dp"
+        android:text="Push Notification"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText3"
+        android:visibility="invisible"
+        android:enabled="false"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -67,9 +67,7 @@ public class Admin extends AppCompatActivity {
         notifybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Show EditText field and enable user input
-                editText.setVisibility(View.VISIBLE);
-                editText.setEnabled(true);
+                createNotifictaion();
             }
         });
     }
