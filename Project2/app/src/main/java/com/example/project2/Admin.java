@@ -67,49 +67,38 @@ public class Admin extends AppCompatActivity {
         notifybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createNotification();
+                createNotifictaion();
             }
         });
     }
 
-    public void createNotification() {
-        String channelID = "CHANNEL_ID_NOTIFICATIONS";
-
-        // Build notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelID)
-                .setSmallIcon(R.drawable.ic_monitor_heart)
+    public void createNotifictaion(){
+        String channelID="CHANNEL_ID_NOTIFICATIONS";
+        NotificationCompat.Builder builder= new NotificationCompat.Builder(getApplicationContext(), channelID);
+        builder.setSmallIcon(R.drawable.ic_monitor_heart)
                 .setContentTitle("Notification Title")
-                .setContentText("Don't forget to do the thing")
+                .setContentText(" Dont forget to do the thing")
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(this, NotificationActivity.class);
-        intent.putExtra("data", "Some stuff to be passed");
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        // Create the PendingIntent
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent intent=new Intent(getApplicationContext(), NotificationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("data", "Some stuff to be passed");
+        PendingIntent pendingIntent= PendingIntent.getActivity(getApplicationContext(),0,
+                intent,PendingIntent.FLAG_MUTABLE);
         builder.setContentIntent(pendingIntent);
-
-        // Get the NotificationManager service
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
-        // Create the notification channel if running on Oreo (API 26) or higher
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelID);
-            if (notificationChannel == null) {
-                CharSequence channelName = "My App Notifications";
+        NotificationManager notificationManager=
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel notificationChannel=
+                    notificationManager.getNotificationChannel(channelID);
+            if(notificationChannel==null){
                 int importance = NotificationManager.IMPORTANCE_HIGH;
-                notificationChannel = new NotificationChannel(channelID, channelName, importance);
-                notificationChannel.enableVibration(true);
+                notificationChannel= new NotificationChannel(channelID, "Some Description", importance);
                 notificationChannel.setLightColor(Color.GREEN);
+                notificationChannel.enableVibration(true);
                 notificationManager.createNotificationChannel(notificationChannel);
             }
         }
-
-        // Show the notification
-        notificationManager.notify(0, builder.build());
+        notificationManager.notify(0,builder.build());
     }
-
 }
