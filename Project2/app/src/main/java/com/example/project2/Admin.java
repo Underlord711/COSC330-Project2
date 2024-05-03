@@ -39,14 +39,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class Admin extends AppCompatActivity {
 
     Button notifybtn;
+    Button push;
     EditText editText;
-    EditText textview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +60,42 @@ public class Admin extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-/*
-
         notifybtn = findViewById(R.id.notification);
+        editText = findViewById(R.id.writeText);
+        push = findViewById(R.id.push);
+        notifybtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText.setVisibility(View.VISIBLE);
+                editText.setEnabled(true);
+                push.setVisibility(View.VISIBLE);
+                push.setEnabled(true);
+            }
+        });
+        push.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String title = "Wellness";
+                String body = editText.getText().toString().trim();
+                editText.setVisibility(View.INVISIBLE);
+                editText.setEnabled(false);
+                sendNotification(title, body);
+            }
+        });
+    }
+    private void sendNotification(String title, String body){
+        push.setVisibility(View.INVISIBLE);
+        push.setEnabled(false);
+        String msgID= UUID.randomUUID().toString();
+        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder("cosc330-project2@fcm.googleapis.com")
+                .setMessageId(msgID)
+                .addData("title",title)
+                .addData("body",body)
+                .build());
+        Toast.makeText(Admin.this, "Notification send Successfully", Toast.LENGTH_SHORT).show();
+    }
+
+        /*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(Admin.this, Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -109,4 +143,3 @@ public class Admin extends AppCompatActivity {
         }
         notificationManager.notify(0,builder.build());
     }*/
-}
