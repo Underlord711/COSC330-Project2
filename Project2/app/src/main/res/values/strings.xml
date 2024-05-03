@@ -13,6 +13,9 @@
     <string name="email">EMAIL</string>
     <string name="click_to_register">Click to register</string>
     <string name="logout">Logout</string>
+    <string name="update_information">Update Information</string>
+    <string name="time">Time</string>
+    <string name="type">Type</string>
     <string-array name="workouts">
         <item>Cardio</item>
         <item>Weight Lifting</item>
