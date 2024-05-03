@@ -58,38 +58,29 @@ public class Admin extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            System.out.println("Fetching FCM registration token failed");
-                            return;
-                        }
 
-                        // Get new FCM registration token
-                        String token = task.getResult();
-
-                        // Log and toast
-                        System.out.println(token);
-                        Toast.makeText(Admin.this, token, Toast.LENGTH_SHORT).show();
-                        textview=findViewById(R.id.textView5);
-                        textview.setText(token);
-                    }
-                });
+/*
 
         notifybtn = findViewById(R.id.notification);
-
-    }
-/*        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(Admin.this, Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(Admin.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
             }
-        }*/
+        }
+        notifybtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNotifictaion();
+            }
+        });
+*/
+
+    }
 
 
-  /*  public void createNotifictaion(){
+
+/*    public void createNotifictaion(){
         String channelID="CHANNEL_ID_NOTIFICATIONS";
         NotificationCompat.Builder builder= new NotificationCompat.Builder(getApplicationContext(), channelID);
         builder.setSmallIcon(R.drawable.ic_monitor_heart)
