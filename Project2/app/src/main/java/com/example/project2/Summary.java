@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.Button;
 
 
-
-
 public class Summary extends AppCompatActivity {
     Button update;
 
@@ -28,7 +26,7 @@ public class Summary extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        update=findViewById(R.id.button3);
+        update = findViewById(R.id.Update);
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

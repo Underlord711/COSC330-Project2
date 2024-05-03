@@ -24,7 +24,7 @@
         app:layout_constraintVertical_bias="0.052" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/updateDataButton"
         android:layout_width="237dp"
         android:layout_height="65dp"
         android:layout_marginStart="104dp"
@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
-        android:id="@+id/editTextText"
+        android:id="@+id/timeInputEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="104dp"
@@ -53,11 +53,11 @@
         android:inputType="text"
         android:minHeight="48dp"
         android:text="@string/time"
-        app:layout_constraintBottom_toTopOf="@+id/editTextText2"
+        app:layout_constraintBottom_toTopOf="@+id/typeInputEditText"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editTextText2"
+        android:id="@+id/typeInputEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="96dp"
@@ -66,7 +66,7 @@
         android:inputType="text"
         android:minHeight="48dp"
         android:text="@string/type"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintBottom_toTopOf="@+id/updateDataButton"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <CalendarView

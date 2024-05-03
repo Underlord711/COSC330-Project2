@@ -40,7 +40,7 @@ public class Update extends AppCompatActivity {
             return insets;
         });
 
-        update = findViewById(R.id.button3);
+        update = findViewById(R.id.updateDataButton);
         date = findViewById(R.id.calendarView4);
         database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users");

@@ -74,7 +74,7 @@
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText2"
-        app:layout_constraintBottom_toTopOf="@+id/button" />
+        app:layout_constraintBottom_toTopOf="@+id/createAccountButton" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -87,7 +87,7 @@
         app:srcCompat="@drawable/title" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/createAccountButton"
         android:layout_width="238dp"
         android:layout_height="87dp"
         android:layout_marginStart="84dp"

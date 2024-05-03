@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -14,8 +15,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -53,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         // Initialize buttons
-        account = findViewById(R.id.button);
-        login = findViewById(R.id.button2);
+        account = findViewById(R.id.createAccountButton);
+        login = findViewById(R.id.mainLoginButton);
 
         // Set OnClickListener for account button
         account.setOnClickListener(new View.OnClickListener() {
@@ -69,12 +70,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Launch CreateAccountActivity
-                Intent intent = new Intent(MainActivity.this, Admin.class);
+//                Intent intent = new Intent(MainActivity.this, Admin.class);
+                Intent intent = new Intent(MainActivity.this, Summary.class);
                 startActivity(intent);
             }
         });
 
     }
+
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {

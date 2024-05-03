@@ -66,6 +66,11 @@
         <activity
             android:name=".Register"
             android:exported="false" />
+
+        <activity
+            android:name=".Summary"
+            android:exported="false" />
+
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
