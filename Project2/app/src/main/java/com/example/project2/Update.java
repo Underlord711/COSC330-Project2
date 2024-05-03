@@ -22,6 +22,7 @@ import android.widget.Spinner;
 
 import com.example.project2.Summary;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class Update extends AppCompatActivity {
     Spinner exerciseSpinner;
     EditText typeInput;
     Button update;
-    FirebaseAuth mAuth;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db;
 
     private String formatDate(int year, int month, int dayOfMonth) {
@@ -79,14 +80,18 @@ public class Update extends AppCompatActivity {
                 String exerciseType = exerciseSpinner.getSelectedItem().toString();
                 String value = typeInput.getText().toString();
 
+                // Get current user's email
+                String userEmail = mAuth.getCurrentUser().getEmail();
+
                 // Write data to Firestore
-                writeDataToFirestore(selectedDate, exerciseType, value);
+                writeDataToFirestore(userEmail, selectedDate, exerciseType, value);
 
                 // Launch Summary activity
                 Intent intent = new Intent(Update.this, Summary.class);
                 startActivity(intent);
             }
         });
+
     }
 
     private String formatDate(long timeInMillis) {
@@ -96,15 +101,17 @@ public class Update extends AppCompatActivity {
         return sdf.format(calendar.getTime());
     }
 
-    private void writeDataToFirestore(String selectedDate, String exerciseType, String value) {
+    private void writeDataToFirestore(String userEmail, String selectedDate, String exerciseType, String value) {
         Map<String, Object> data = new HashMap<>();
         data.put("date", selectedDate);
         data.put("exerciseType", exerciseType);
         data.put("value", value);
 
-        db.collection("exerciseData")
+        db.collection("users").document(userEmail).collection("exerciseData")
                 .add(data)
                 .addOnSuccessListener(documentReference -> Log.d("Firestore", "DocumentSnapshot added with ID: " + documentReference.getId()))
                 .addOnFailureListener(e -> Log.w("Firestore", "Error adding document", e));
     }
+
+
 }

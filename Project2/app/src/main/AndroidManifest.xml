@@ -65,6 +65,10 @@
             android:exported="false" />
 
         <activity
+            android:name=".Login"
+            android:exported="false" />
+
+        <activity
             android:name=".Update"
             android:exported="false" />
 
