@@ -86,13 +86,7 @@ public class Admin extends AppCompatActivity {
     private void sendNotification(String title, String body){
         push.setVisibility(View.INVISIBLE);
         push.setEnabled(false);
-        String msgID= UUID.randomUUID().toString();
-        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder("cosc330-project2@fcm.googleapis.com")
-                .setMessageId(msgID)
-                .addData("title",title)
-                .addData("body",body)
-                .build());
-        Toast.makeText(Admin.this, "Notification send Successfully", Toast.LENGTH_SHORT).show();
+    String campaignid="3704895349349358516";
     }
 
         /*
