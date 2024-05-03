@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -16,18 +17,32 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.EditText;
+import android.widget.Spinner;
 
+import com.example.project2.Summary;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class Update extends AppCompatActivity {
     CalendarView date;
+    Spinner exerciseSpinner;
+    EditText typeInput;
     Button update;
     FirebaseAuth mAuth;
-    FirebaseDatabase database;
+    FirebaseFirestore db;
+
+    private String formatDate(int year, int month, int dayOfMonth) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, dayOfMonth);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return sdf.format(calendar.getTime());
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +57,11 @@ public class Update extends AppCompatActivity {
 
         update = findViewById(R.id.updateDataButton);
         date = findViewById(R.id.calendarView4);
-        database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users");
+        exerciseSpinner = findViewById(R.id.exerciseSelectionSpinner);
+        typeInput = findViewById(R.id.typeInputEditText);
+        db = FirebaseFirestore.getInstance();
 
-        myRef.setValue("Hello, World!");
         // Set a listener to get the selected date
-
         date.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -56,27 +70,41 @@ public class Update extends AppCompatActivity {
                 Log.d("SelectedDate", "Date Selected: " + selectedDate);
             }
         });
+
         update.setOnClickListener(new View.OnClickListener() {
-             @Override
+            @Override
             public void onClick(View v) {
-                // Launch CreateAccountActivity
+                // Get data
+                String selectedDate = formatDate(date.getDate());
+                String exerciseType = exerciseSpinner.getSelectedItem().toString();
+                String value = typeInput.getText().toString();
+
+                // Write data to Firestore
+                writeDataToFirestore(selectedDate, exerciseType, value);
+
+                // Launch Summary activity
                 Intent intent = new Intent(Update.this, Summary.class);
                 startActivity(intent);
             }
         });
     }
 
-    private String formatDate(int year, int month, int dayOfMonth) {
+    private String formatDate(long timeInMillis) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, dayOfMonth);
+        calendar.setTimeInMillis(timeInMillis);
         return sdf.format(calendar.getTime());
     }
 
-//    public void writeNewUser(String userId, String name, String email) {
-//        User user = new User(name, email);
-//
-//        mDatabase.child("users").child(userId).setValue(user);
-//    }
-}
+    private void writeDataToFirestore(String selectedDate, String exerciseType, String value) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("date", selectedDate);
+        data.put("exerciseType", exerciseType);
+        data.put("value", value);
 
+        db.collection("exerciseData")
+                .add(data)
+                .addOnSuccessListener(documentReference -> Log.d("Firestore", "DocumentSnapshot added with ID: " + documentReference.getId()))
+                .addOnFailureListener(e -> Log.w("Firestore", "Error adding document", e));
+    }
+}
