@@ -17,12 +17,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.Objects;
+
 public class Summary extends AppCompatActivity {
     Button update;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
-
-
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,17 +38,18 @@ public class Summary extends AppCompatActivity {
         update = findViewById(R.id.Update);
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        Log.d("Hi Mom", "This");
+        email = Objects.requireNonNull(mAuth.getCurrentUser()).getEmail();
+
+        // Retrieve data from Firestore and output to console
+        retrieveAndOutputData();
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Retrieve data from Firestore and output to console
-                retrieveAndOutputData();
-
                 // Launch CreateAccountActivity
                 Intent intent = new Intent(Summary.this, Update.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -59,7 +61,7 @@ public class Summary extends AppCompatActivity {
 
             // Query Firestore to retrieve data for the current user
             db.collection("users")
-                    .document(userId)
+                    .document(email)
                     .collection("exerciseData")
                     .get()
                     .addOnCompleteListener(task -> {
