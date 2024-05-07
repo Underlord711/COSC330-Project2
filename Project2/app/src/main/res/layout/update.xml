@@ -43,31 +43,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+
     <EditText
         android:id="@+id/timeInputEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="58dp"
         android:ems="10"
         android:inputType="text"
-        android:minHeight="48dp"
         android:text="@string/time"
-        app:layout_constraintBottom_toTopOf="@+id/typeInputEditText"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/typeInputEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="96dp"
-        android:layout_marginBottom="20dp"
-        android:ems="10"
-        android:inputType="text"
-        android:minHeight="48dp"
-        android:text="@string/type"
-        app:layout_constraintBottom_toTopOf="@+id/updateDataButton"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exerciseSelectionSpinner" />
 
     <CalendarView
         android:id="@+id/calendarView4"

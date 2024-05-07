@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Launch CreateAccountActivity
 //                Intent intent = new Intent(MainActivity.this, Admin.class);
-                Intent intent = new Intent(MainActivity.this, Admin.class);
+                Intent intent = new Intent(MainActivity.this, Login.class);
                 startActivity(intent);
             }
         });

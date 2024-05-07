@@ -75,46 +75,9 @@
         android:layout_height="262dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="11dp"
-        android:layout_marginBottom="26dp"
-        app:layout_constraintBottom_toTopOf="@+id/push"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activitysummary" />
 
-    <Button
-        android:id="@+id/notification"
-        android:layout_width="160dp"
-        android:layout_height="67dp"
-        android:layout_marginEnd="132dp"
-        android:layout_marginBottom="16dp"
-        android:text="Create Notification"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
-    <EditText
-        android:id="@+id/writeText"
-        android:layout_width="262dp"
-        android:layout_height="153dp"
-        android:layout_marginTop="87dp"
-        android:layout_marginEnd="86dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activitysummary"
-        android:background="@color/white"
-        android:visibility="invisible"
-        android:enabled="false" />
-
-    <Button
-        android:id="@+id/push"
-        android:layout_width="150dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="119dp"
-        android:layout_marginTop="14dp"
-        android:text="Push Notification"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/writeText"
-        android:visibility="invisible"
-        android:enabled="false"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

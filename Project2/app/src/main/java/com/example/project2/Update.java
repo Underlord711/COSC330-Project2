@@ -59,8 +59,8 @@ public class Update extends AppCompatActivity {
         update = findViewById(R.id.updateDataButton);
         date = findViewById(R.id.calendarView4);
         exerciseSpinner = findViewById(R.id.exerciseSelectionSpinner);
-        typeInput = findViewById(R.id.typeInputEditText);
         db = FirebaseFirestore.getInstance();
+        typeInput=findViewById(R.id.timeInputEditText);
 
         // Set a listener to get the selected date
         date.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
