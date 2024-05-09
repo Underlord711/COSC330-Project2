@@ -39,7 +39,6 @@ public class Summary extends AppCompatActivity {
     private LineChart lineChart;
     private List<String> xvalue;
     Spinner excersize;
-    Button update;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     String email;
@@ -57,7 +56,6 @@ public class Summary extends AppCompatActivity {
 
         // Initialize views
         excersize = findViewById(R.id.exerciseSelectionSpinner);
-        update = findViewById(R.id.Update);
 
         // Initialize Firebase instances
         db = FirebaseFirestore.getInstance();
@@ -79,14 +77,6 @@ public class Summary extends AppCompatActivity {
         });
 
         // Set update button click listener
-        update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Summary.this, Update.class);
-                startActivity(intent);
-                finish();
-            }
-        });
     }
 
     private void retrieveAndOutputData(String exercise) {
@@ -155,7 +145,7 @@ public class Summary extends AppCompatActivity {
 
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(50f);
+        yAxis.setAxisMaximum(24f);
         yAxis.setAxisLineWidth(2f);
         yAxis.setAxisLineColor(Color.BLACK);
         yAxis.setLabelCount(15);

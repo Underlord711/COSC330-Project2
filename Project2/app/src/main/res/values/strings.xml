@@ -18,6 +18,8 @@
     <string name="type">Type</string>
     <string name="channel_name">Channel Name</string>
     <string name="channel_description">Channel Description</string>
+    <string name="select_Summary">Go to Summary</string>
+
     <string-array name="workouts">
         <item>Running</item>
         <item>Weight Lifting</item>

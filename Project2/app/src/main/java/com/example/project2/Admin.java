@@ -8,8 +8,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,59 +30,30 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Admin extends AppCompatActivity {
     private LineChart lineChart;
     private List<String> xvalue;
-
+    FirebaseFirestore db;
+    Spinner exercise;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        lineChart = findViewById(R.id.chart);
-        Description description = new Description();
-        description.setText("Students Record");
-        description.setPosition(150f, 15f);
-        lineChart.setDescription(description);
-        lineChart.getAxisRight().setDrawLabels(false);
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xvalue = Arrays.asList("Nadon", "Kamal", "John");
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(xvalue));
-        xAxis.setLabelCount(3);
-        xAxis.setGranularity(1f);
-        YAxis yAxis = lineChart.getAxisLeft();
-        yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(100f);
-        yAxis.setAxisLineWidth(2f);
-        yAxis.setAxisLineColor(Color.BLACK);
-        yAxis.setLabelCount(15);
-
-        List<Entry> entries1 = new ArrayList<>();
-        entries1.add(new Entry(0, 10f));
-        entries1.add(new Entry(1, 10f));
-        entries1.add(new Entry(2, 35f));
-        entries1.add(new Entry(3, 45f));
-
-        List<Entry> entries2 = new ArrayList<>();
-        entries2.add(new Entry(0, 5f));
-        entries2.add(new Entry(1, 15f));
-        entries2.add(new Entry(2, 20f));
-        entries2.add(new Entry(3, 30f));
-
-        LineDataSet dataSet1 = new LineDataSet(entries1, "Maths");
-        dataSet1.setColor(Color.BLUE);
-        LineDataSet dataSet2 = new LineDataSet(entries2, "Science");
-        dataSet2.setColor(Color.RED);
-
-        LineData lineData = new LineData(dataSet1, dataSet2);
-        lineChart.setData(lineData);
-        lineChart.invalidate();
+        exercise=findViewById(R.id.activity);
+//
+        db = FirebaseFirestore.getInstance();
 
         FirebaseMessaging.getInstance().subscribeToTopic("weather")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -95,12 +68,127 @@ public class Admin extends AppCompatActivity {
                     }
                 });
 
+        exercise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedExerciseType = parent.getItemAtPosition(position).toString();
+                retrieveAndOutputData(selectedExerciseType); // Call function with selected exercise type
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+    private void retrieveAndOutputData(String exercise) {
+        db.collectionGroup("exerciseData")
+                .whereEqualTo("exerciseType", exercise)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Map<String, Float> dateValueMap = new HashMap<>();
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String date = document.getString("date");
+                            String valueStr = document.getString("value");
+                            float value = Float.parseFloat(valueStr);
+
+                            if (dateValueMap.containsKey(date)) {
+                                float currentValue = dateValueMap.get(date);
+                                dateValueMap.put(date, currentValue + value);
+                            } else {
+                                dateValueMap.put(date, value);
+                            }
+
+                            Log.d("FirestoreData", "Date: " + date + ", Exercise Type: " + exercise + ", Value: " + value);
+                        }
+
+                        List<Entry> entries1 = new ArrayList<>();
+                        List<String> dates = new ArrayList<>();
+
+                        int index = 0;
+                        for (String date : dateValueMap.keySet()) {
+                            float aggregatedValue = dateValueMap.get(date);
+                            Entry entry = new Entry(index, aggregatedValue);
+                            entries1.add(entry);
+                            dates.add(date);
+                            index++;
+                        }
+
+                        configureChart(entries1, dates); // Update chart with new data
+                    } else {
+                        Log.e("FirestoreData", "Error getting documents: ", task.getException());
+                    }
+                });
+    }
+
+
+    private void configureChart(List<Entry> entries1, List<String> dates) {
+        lineChart = findViewById(R.id.chart);
+        Description description = new Description();
+        description.setText("Students Record");
+        description.setPosition(150f, 15f);
+        lineChart.setDescription(description);
+        lineChart.getAxisRight().setDrawLabels(false);
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(dates));
+        xAxis.setLabelCount(dates.size());
+        xAxis.setGranularity(1f);
+
+        YAxis yAxis = lineChart.getAxisLeft();
+        yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(24f);
+        yAxis.setAxisLineWidth(2f);
+        yAxis.setAxisLineColor(Color.BLACK);
+        yAxis.setLabelCount(15);
+
+        LineDataSet dataSet1 = new LineDataSet(entries1, "Work");
+        dataSet1.setColor(Color.BLUE);
+
+        LineData lineData = new LineData(dataSet1);
+        lineChart.setData(lineData);
+        lineChart.invalidate();
     }
 }
-
-
-
-
-
-
+        //lineChart = findViewById(R.id.chart);
+//        Description description = new Description();
+//        description.setText("Students Record");
+//        description.setPosition(150f, 15f);
+//        lineChart.setDescription(description);
+//        lineChart.getAxisRight().setDrawLabels(false);
+//        XAxis xAxis = lineChart.getXAxis();
+//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+//        xvalue = Arrays.asList("Nadon", "Kamal", "John");
+//        xAxis.setValueFormatter(new IndexAxisValueFormatter(xvalue));
+//        xAxis.setLabelCount(3);
+//        xAxis.setGranularity(1f);
+//        YAxis yAxis = lineChart.getAxisLeft();
+//        yAxis.setAxisMinimum(0f);
+//        yAxis.setAxisMaximum(100f);
+//        yAxis.setAxisLineWidth(2f);
+//        yAxis.setAxisLineColor(Color.BLACK);
+//        yAxis.setLabelCount(15);
+//
+//        List<Entry> entries1 = new ArrayList<>();
+//        entries1.add(new Entry(0, 10f));
+//        entries1.add(new Entry(1, 10f));
+//        entries1.add(new Entry(2, 35f));
+//        entries1.add(new Entry(3, 45f));
+//
+//        List<Entry> entries2 = new ArrayList<>();
+//        entries2.add(new Entry(0, 5f));
+//        entries2.add(new Entry(1, 15f));
+//        entries2.add(new Entry(2, 20f));
+//        entries2.add(new Entry(3, 30f));
+//
+//        LineDataSet dataSet1 = new LineDataSet(entries1, "Maths");
+//        dataSet1.setColor(Color.BLUE);
+//        LineDataSet dataSet2 = new LineDataSet(entries2, "Science");
+//        dataSet2.setColor(Color.RED);
+//
+//        LineData lineData = new LineData(dataSet1, dataSet2);
+//        lineChart.setData(lineData);
+//        lineChart.invalidate();
 

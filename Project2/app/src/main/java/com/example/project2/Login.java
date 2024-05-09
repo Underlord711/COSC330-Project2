@@ -66,7 +66,7 @@ public class Login extends AppCompatActivity {
                                 if (isAdmin) {
                                     intent = new Intent(getApplicationContext(), Admin.class);
                                 } else {
-                                    intent = new Intent(getApplicationContext(), Summary.class);
+                                    intent = new Intent(getApplicationContext(), Update.class);
                                 }
 
                                 startActivity(intent);
@@ -146,7 +146,7 @@ public class Login extends AppCompatActivity {
                                     if (isAdmin) {
                                         intent = new Intent(getApplicationContext(), Admin.class);
                                     } else{
-                                        intent = new Intent(getApplicationContext(), Summary.class);
+                                        intent = new Intent(getApplicationContext(), Update.class);
                                     }
 
                                     startActivity(intent);
