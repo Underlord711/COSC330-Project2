@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -47,6 +48,9 @@ public class Admin extends AppCompatActivity {
     private List<String> xvalue;
     FirebaseFirestore db;
     Spinner exercise;
+    Spinner user;
+    Button jump;
+    ArrayAdapter<String> userAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +84,38 @@ public class Admin extends AppCompatActivity {
 
             }
         });
+        user = findViewById(R.id.user);
+        userAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
+        userAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        user.setAdapter(userAdapter);
+
+        // Populate the user Spinner with document IDs from 'users' collection
+        populateUserSpinner();
+        jump=findViewById(R.id.jump);
+        jump.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String selectedUserId = (String) user.getSelectedItem();
+            }
+        });
+
+    }
+
+    private void populateUserSpinner() {
+        db.collection("users")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<String> userIds = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            userIds.add(document.getId()); // Add document ID to the list
+                        }
+                        userAdapter.addAll(userIds); // Add all IDs to the Spinner adapter
+                        userAdapter.notifyDataSetChanged(); // Notify adapter about data change
+                    } else {
+                        Log.e("Firestore", "Error getting user documents: ", task.getException());
+                    }
+                });
     }
     private void retrieveAndOutputData(String exercise) {
         db.collectionGroup("exerciseData")

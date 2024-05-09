@@ -112,23 +112,40 @@ public class Update extends AppCompatActivity {
     }
 
     private void writeDataToFirestore(String userEmail, String selectedDate, String exerciseType, String value) {
+        // Map to hold the new field 'hiMom' with value '123'
         Map<String, Object> data = new HashMap<>();
-        data.put("date", selectedDate);
-        data.put("exerciseType", exerciseType);
-        data.put("value", value);
+        data.put("hiMom", "123");
 
-        db.collection("users").document(userEmail).collection("exerciseData")
-                .add(data)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d("Firestore", "DocumentSnapshot added with ID: " + documentReference.getId());
+        // Get a reference to the user document using the userEmail
+        db.collection("users").document(userEmail)
+                .update(data) // Update the existing document with the new 'hiMom' field
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firestore", "Document updated successfully");
                     // Show toast indicating success
                     Toast.makeText(Update.this, "Data saved successfully!", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    Log.w("Firestore", "Error adding document", e);
+                    Log.w("Firestore", "Error updating document", e);
                     // Show toast indicating failure
                     Toast.makeText(Update.this, "Failed to save data.", Toast.LENGTH_SHORT).show();
                 });
 
+        // Now add the exercise data to the 'exerciseData' subcollection as before
+        Map<String, Object> exerciseData = new HashMap<>();
+        exerciseData.put("date", selectedDate);
+        exerciseData.put("exerciseType", exerciseType);
+        exerciseData.put("value", value);
+
+        db.collection("users").document(userEmail).collection("exerciseData")
+                .add(exerciseData)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("Firestore", "Exercise data added with ID: " + documentReference.getId());
+                    // No need to show toast here as it's for exercise data, not for 'hiMom'
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Firestore", "Error adding exercise data", e);
+                    // No need to show toast here as it's for exercise data, not for 'hiMom'
+                });
     }
+
 }
