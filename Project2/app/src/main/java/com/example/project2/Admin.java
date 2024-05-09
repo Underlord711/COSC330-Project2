@@ -2,6 +2,7 @@ package com.example.project2;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -96,6 +97,9 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String selectedUserId = (String) user.getSelectedItem();
+                Intent intent = new Intent(Admin.this, Summary.class);
+                intent.putExtra("userId", selectedUserId); // Pass the selected user ID to Summary activity
+                startActivity(intent);
             }
         });
 

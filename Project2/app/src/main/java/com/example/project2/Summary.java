@@ -38,7 +38,7 @@ import com.github.mikephil.charting.charts.LineChart;
 public class Summary extends AppCompatActivity {
     private LineChart lineChart;
     private List<String> xvalue;
-    Spinner excersize;
+    Spinner exercise;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     String email;
@@ -55,15 +55,25 @@ public class Summary extends AppCompatActivity {
         });
 
         // Initialize views
-        excersize = findViewById(R.id.exerciseSelectionSpinner);
+        exercise = findViewById(R.id.exerciseSelectionSpinner);
 
         // Initialize Firebase instances
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        email = Objects.requireNonNull(mAuth.getCurrentUser()).getEmail();
+
+        // Get user ID (email) from intent extras, if available
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("userId")) {
+            email = intent.getStringExtra("userId");
+        } else {
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            if (currentUser != null) {
+                email = currentUser.getEmail(); // Use currently signed-in user's email
+            }
+        }
 
         // Set spinner item selection listener
-        excersize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        exercise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedExerciseType = parent.getItemAtPosition(position).toString();
@@ -75,59 +85,55 @@ public class Summary extends AppCompatActivity {
                 // Handle nothing selected if needed
             }
         });
-
-        // Set update button click listener
     }
 
     private void retrieveAndOutputData(String exercise) {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-
-            db.collection("users")
-                    .document(email)
-                    .collection("exerciseData")
-                    .whereEqualTo("exerciseType", exercise)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Map<String, Float> dateValueMap = new HashMap<>();
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String date = document.getString("date");
-                                String valueStr = document.getString("value");
-                                float value = Float.parseFloat(valueStr);
-
-                                if (dateValueMap.containsKey(date)) {
-                                    float currentValue = dateValueMap.get(date);
-                                    dateValueMap.put(date, currentValue + value);
-                                } else {
-                                    dateValueMap.put(date, value);
-                                }
-
-                                Log.d("FirestoreData", "Date: " + date + ", Exercise Type: " + exercise + ", Value: " + value);
-                            }
-
-                            List<Entry> entries1 = new ArrayList<>();
-                            List<String> dates = new ArrayList<>();
-
-                            int index = 0;
-                            for (String date : dateValueMap.keySet()) {
-                                float aggregatedValue = dateValueMap.get(date);
-                                Entry entry = new Entry(index, aggregatedValue);
-                                entries1.add(entry);
-                                dates.add(date);
-                                index++;
-                            }
-
-                            configureChart(entries1, dates); // Update chart with new data
-                        } else {
-                            Log.e("FirestoreData", "Error getting documents: ", task.getException());
-                        }
-                    });
-        } else {
-            Log.e("FirestoreData", "No user signed in.");
+        if (email == null) {
+            Log.e("FirestoreData", "User ID (email) is null.");
+            return;
         }
+
+        db.collection("users")
+                .document(email)
+                .collection("exerciseData")
+                .whereEqualTo("exerciseType", exercise)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Map<String, Float> dateValueMap = new HashMap<>();
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String date = document.getString("date");
+                            String valueStr = document.getString("value");
+                            float value = Float.parseFloat(valueStr);
+
+                            if (dateValueMap.containsKey(date)) {
+                                float currentValue = dateValueMap.get(date);
+                                dateValueMap.put(date, currentValue + value);
+                            } else {
+                                dateValueMap.put(date, value);
+                            }
+
+                            Log.d("FirestoreData", "Date: " + date + ", Exercise Type: " + exercise + ", Value: " + value);
+                        }
+
+                        List<Entry> entries1 = new ArrayList<>();
+                        List<String> dates = new ArrayList<>();
+
+                        int index = 0;
+                        for (String date : dateValueMap.keySet()) {
+                            float aggregatedValue = dateValueMap.get(date);
+                            Entry entry = new Entry(index, aggregatedValue);
+                            entries1.add(entry);
+                            dates.add(date);
+                            index++;
+                        }
+
+                        configureChart(entries1, dates); // Update chart with new data
+                    } else {
+                        Log.e("FirestoreData", "Error getting documents: ", task.getException());
+                    }
+                });
     }
 
     private void configureChart(List<Entry> entries1, List<String> dates) {
