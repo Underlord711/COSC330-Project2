@@ -19,8 +19,17 @@
     <string name="channel_name">Channel Name</string>
     <string name="channel_description">Channel Description</string>
     <string-array name="workouts">
-        <item>Cardio</item>
+        <item>Running</item>
         <item>Weight Lifting</item>
         <item>Swimming</item>
+        <item>Basketball</item>
+        <item>Cycling</item>
+        <item>Yoga</item>
+        <item>Tennis</item>
+        <item>Soccer</item>
+        <item>Boxing</item>
+        <item>Rowing</item>
+        <item>Dancing</item>
     </string-array>
+
 </resources>
