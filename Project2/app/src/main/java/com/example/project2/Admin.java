@@ -51,6 +51,7 @@ public class Admin extends AppCompatActivity {
     Spinner exercise;
     Spinner user;
     Button jump;
+    Button notificationsButton;
     ArrayAdapter<String> userAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,8 @@ public class Admin extends AppCompatActivity {
         userAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         user.setAdapter(userAdapter);
 
+        notificationsButton = findViewById(R.id.goToNotificationsButton);
+
         // Populate the user Spinner with document IDs from 'users' collection
         populateUserSpinner();
         jump=findViewById(R.id.jump);
@@ -103,6 +106,13 @@ public class Admin extends AppCompatActivity {
             }
         });
 
+        notificationsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Admin.this, ScrollingActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void populateUserSpinner() {
