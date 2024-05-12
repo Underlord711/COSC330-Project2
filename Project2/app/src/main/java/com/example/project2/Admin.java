@@ -53,11 +53,12 @@ public class Admin extends AppCompatActivity {
     Button jump;
     Button notificationsButton;
     ArrayAdapter<String> userAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        exercise=findViewById(R.id.activity);
+        exercise = findViewById(R.id.activity);
 //
         db = FirebaseFirestore.getInstance();
 
@@ -95,7 +96,7 @@ public class Admin extends AppCompatActivity {
 
         // Populate the user Spinner with document IDs from 'users' collection
         populateUserSpinner();
-        jump=findViewById(R.id.jump);
+        jump = findViewById(R.id.jump);
         jump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,6 +132,7 @@ public class Admin extends AppCompatActivity {
                     }
                 });
     }
+
     private void retrieveAndOutputData(String exercise) {
         db.collectionGroup("exerciseData")
                 .whereEqualTo("exerciseType", exercise)
@@ -202,7 +204,7 @@ public class Admin extends AppCompatActivity {
         lineChart.invalidate();
     }
 }
-        //lineChart = findViewById(R.id.chart);
+//lineChart = findViewById(R.id.chart);
 //        Description description = new Description();
 //        description.setText("Students Record");
 //        description.setPosition(150f, 15f);

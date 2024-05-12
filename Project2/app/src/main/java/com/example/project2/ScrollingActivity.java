@@ -1,5 +1,8 @@
 package com.example.project2;
 
+import static com.example.project2.NotificationHelper.createNotificationChannel;
+import static com.example.project2.NotificationHelper.triggerNotification;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -33,9 +36,11 @@ public class ScrollingActivity extends AppCompatActivity {
     String TAG = "FIREBASE";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        createNotificationChannel(this); // Create notification channel
 
         binding = ActivityScrollingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -60,29 +65,28 @@ public class ScrollingActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
                                 @Nullable FirebaseFirestoreException e) {
-                String data = "";
 
                 if (e != null) {
                     Log.w(TAG, "Listen failed.", e);
                     return;
                 }
 
-                String source = snapshot != null && snapshot.getMetadata().hasPendingWrites()
-                        ? "Local" : "Server";
-
                 if (snapshot != null && snapshot.exists()) {
-                    data = formatString(Objects.requireNonNull(snapshot.getData()).toString());
+                    String source = snapshot.getMetadata().hasPendingWrites() ? "Local" : "Server";
+                    String data = formatString(Objects.requireNonNull(snapshot.getData()).toString());
+
+                    // Output the change to the console
                     Log.d(TAG, source + " data: " + snapshot.getData());
+
+                    // Update the TextView with the latest data
+                    textView = findViewById(R.id.textInScrollView);
+                    textView.setText(data);
+                    triggerNotification(ScrollingActivity.this,"Title", data);
                 } else {
-                    Log.d(TAG, source + " data: null");
+                    Log.d(TAG, "Document snapshot is null or doesn't exist");
                 }
-                textView = findViewById(R.id.textInScrollView);
-                textView.setText(data);
             }
         });
-
-
-
     }
 
     public static String formatString(String input) {
