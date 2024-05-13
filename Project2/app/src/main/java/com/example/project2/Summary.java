@@ -38,6 +38,8 @@ import com.github.mikephil.charting.charts.LineChart;
 public class Summary extends AppCompatActivity {
     private LineChart lineChart;
     private List<String> xvalue;
+    private Map<String, Float> dateValueMap = new HashMap<>();
+
     Spinner exercise;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
@@ -92,10 +94,15 @@ public class Summary extends AppCompatActivity {
             public void onClick(View v) {
                 String selectedExerciseType = exercise.getSelectedItem().toString(); // Get the selected exercise type
                 Intent statsIntent = new Intent(Summary.this, Stats.class);
-                statsIntent.putExtra("exerciseType", selectedExerciseType); // Pass exercise type to StatsActivity
+
+                // Pass exercise type and dateValueMap to StatsActivity
+                statsIntent.putExtra("exerciseType", selectedExerciseType);
+                statsIntent.putExtra("dateValueMap", new HashMap<>(dateValueMap)); // Pass a copy to avoid modifications
+
                 startActivity(statsIntent);
             }
         });
+
 
     }
 
@@ -112,7 +119,8 @@ public class Summary extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Map<String, Float> dateValueMap = new HashMap<>();
+                        // Clear existing entries from the global dateValueMap
+                        dateValueMap.clear();
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String date = document.getString("date");
@@ -148,6 +156,7 @@ public class Summary extends AppCompatActivity {
                     }
                 });
     }
+
 
 
     private void configureChart(List<Entry> entries1, List<String> dates) {
