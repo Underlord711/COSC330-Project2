@@ -117,24 +117,26 @@ public class Summary extends AppCompatActivity {
                             Log.d("FirestoreData", "Date: " + date + ", Exercise Type: " + exercise + ", Value: " + value);
                         }
 
-                        List<Entry> entries1 = new ArrayList<>();
+                        List<Entry> entries = new ArrayList<>();
                         List<String> dates = new ArrayList<>();
 
-                        int index = 0;
+                        // Process dates to use only the day component for display
                         for (String date : dateValueMap.keySet()) {
                             float aggregatedValue = dateValueMap.get(date);
-                            Entry entry = new Entry(index, aggregatedValue);
-                            entries1.add(entry);
-                            dates.add(date);
-                            index++;
+                            entries.add(new Entry(entries.size(), aggregatedValue));
+
+                            // Extract day part from the date (assuming date is in "yyyy-MM-dd" format)
+                            String day = date.substring(8, 10); // Extracts characters at index 8 and 9 (day part)
+                            dates.add(day); // Add day to list of x-axis labels
                         }
 
-                        configureChart(entries1, dates); // Update chart with new data
+                        configureChart(entries, dates); // Update chart with new data
                     } else {
                         Log.e("FirestoreData", "Error getting documents: ", task.getException());
                     }
                 });
     }
+
 
     private void configureChart(List<Entry> entries1, List<String> dates) {
         lineChart = findViewById(R.id.chart);

@@ -47,6 +47,7 @@ import java.util.Map;
 public class Admin extends AppCompatActivity {
     private LineChart lineChart;
     private List<String> xvalue;
+    private int users=0;
     FirebaseFirestore db;
     Spinner exercise;
     Spinner user;
@@ -124,6 +125,7 @@ public class Admin extends AppCompatActivity {
                         List<String> userIds = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             userIds.add(document.getId()); // Add document ID to the list
+                            users++;
                         }
                         userAdapter.addAll(userIds); // Add all IDs to the Spinner adapter
                         userAdapter.notifyDataSetChanged(); // Notify adapter about data change
@@ -140,8 +142,6 @@ public class Admin extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Map<String, Float> dateValueMap = new HashMap<>();
-                        int documentCount = 0; // To count the number of documents
-
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String date = document.getString("date");
                             String valueStr = document.getString("value");
@@ -155,34 +155,37 @@ public class Admin extends AppCompatActivity {
                                 dateValueMap.put(date, value);
                             }
 
-                            documentCount++; // Increment document count
                             Log.d("FirestoreData", "Date: " + date + ", Exercise Type: " + exercise + ", Value: " + value);
                         }
 
                         List<Entry> entries = new ArrayList<>();
                         List<String> dates = new ArrayList<>();
 
-                        int index = 0;
+                        // Process dates to use only the day component for display
                         for (String date : dateValueMap.keySet()) {
                             float aggregatedValue = dateValueMap.get(date);
 
-                            // Calculate average value before adding to entry
-                            if (documentCount > 0) {
-                                aggregatedValue /= documentCount;
+                            // Calculate average value if needed (e.g., divide by number of users)
+                            // Here we assume 'users' is the total count of users contributing to the data
+                            if (users > 0) {
+                                aggregatedValue /= users;
                             }
 
-                            Entry entry = new Entry(index, aggregatedValue);
-                            entries.add(entry);
-                            dates.add(date);
-                            index++;
+                            // Extract day part from the date (assuming date is in "yyyy-MM-dd" format)
+                            String day = date.substring(8, 10); // Extract characters at index 8 and 9 (day part)
+                            dates.add(day); // Add day to list of x-axis labels
+
+                            // Create entry for the chart with aggregated value
+                            entries.add(new Entry(entries.size(), aggregatedValue));
                         }
 
-                        configureChart(entries, dates); // Update chart with new data
+                        configureChart(entries, dates); // Update chart with new data (day-only x-axis)
                     } else {
                         Log.e("FirestoreData", "Error getting documents: ", task.getException());
                     }
                 });
     }
+
 
 
     private void configureChart(List<Entry> entries1, List<String> dates) {
