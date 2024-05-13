@@ -35,6 +35,7 @@ public class ScrollingActivity extends AppCompatActivity {
     TextView textView;
     String TAG = "FIREBASE";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    boolean notificationTriggered = false;
 
 
     @Override
@@ -81,7 +82,10 @@ public class ScrollingActivity extends AppCompatActivity {
                     // Update the TextView with the latest data
                     textView = findViewById(R.id.textInScrollView);
                     textView.setText(data);
-                    triggerNotification(ScrollingActivity.this,"Title", data);
+                    if (notificationTriggered)
+                        triggerNotification(ScrollingActivity.this,getTitle(data), getMessage(data));
+                    else
+                        notificationTriggered = true;
                 } else {
                     Log.d(TAG, "Document snapshot is null or doesn't exist");
                 }
@@ -89,7 +93,7 @@ public class ScrollingActivity extends AppCompatActivity {
         });
     }
 
-    public static String formatString(String input) {
+    public String formatString(String input) {
         // Remove curly braces
         String parsedString = input.replaceAll("[{}]", "");
 
@@ -98,5 +102,35 @@ public class ScrollingActivity extends AppCompatActivity {
         parsedString = parsedString.replaceAll(",", "\n\n");
 
         return parsedString;
+    }
+
+    public String getTitle(String input) {
+        // Remove curly braces
+
+        // The title is between the first and second line
+        String[] lines = input.split("\n");
+        if (lines.length < 2) {
+            return "No title";
+        }
+
+        String title = lines[1];
+        Log.d("TITLE", title);
+
+        return title;
+    }
+
+    public String getMessage(String input) {
+        // Remove curly braces
+
+        // The title is between the first and second line
+        String[] lines = input.split("\n");
+        if (lines.length < 2) {
+            return "No title";
+        }
+
+        String title = lines[2];
+        Log.d("TITLE", title);
+
+        return title;
     }
 }

@@ -1,5 +1,8 @@
 package com.example.project2;
 
+import static com.example.project2.NotificationHelper.triggerNotification;
+
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -24,7 +28,11 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -44,10 +52,57 @@ public class Summary extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     String email;
+    boolean notificationTriggered = false;
+    String TAG = "Summary";
     Button summary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Call listenForNotifications
+        // Inside another Activity or class
+        final DocumentReference docRef = db.collection("notifications").document("notice");
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+
+                if (e != null) {
+//                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    String source = snapshot.getMetadata().hasPendingWrites() ? "Local" : "Server";
+                    String data = formatString(Objects.requireNonNull(snapshot.getData()).toString());
+
+                    // Output the change to the console
+                    Log.d(TAG, source + " data: " + snapshot.getData());
+
+                    // Update the TextView with the latest data
+//                    textView = findViewById(R.id.textInScrollView);
+//                    textView.setText(data);
+                    if (notificationTriggered)
+                        triggerNotification(Summary.this, "Title", data);
+                    else
+                        notificationTriggered = true;
+                } else {
+                    Log.d(TAG, "Document snapshot is null or doesn't exist");
+                }
+            }
+
+            public String formatString(String input) {
+                // Remove curly braces
+                String parsedString = input.replaceAll("[{}]", "");
+
+                // Replace '=' and '~' with new line characters
+                parsedString = parsedString.replaceAll("[=~]", "\n");
+                parsedString = parsedString.replaceAll(",", "\n\n");
+
+                return parsedString;
+            }
+        });
+
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.summary);
@@ -88,7 +143,7 @@ public class Summary extends AppCompatActivity {
                 // Handle nothing selected if needed
             }
         });
-        summary=findViewById(R.id.stats);
+        summary = findViewById(R.id.stats);
         summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +211,6 @@ public class Summary extends AppCompatActivity {
                     }
                 });
     }
-
 
 
     private void configureChart(List<Entry> entries1, List<String> dates) {

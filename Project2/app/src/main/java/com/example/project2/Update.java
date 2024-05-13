@@ -1,5 +1,9 @@
 package com.example.project2;
 
+import static com.example.project2.NotificationHelper.createNotificationChannel;
+import static com.example.project2.NotificationHelper.triggerNotification;
+
+import android.content.Context;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
@@ -8,6 +12,7 @@ import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -24,20 +29,27 @@ import android.widget.Toast;
 import com.example.project2.Summary;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class Update extends AppCompatActivity {
     CalendarView date;
     Spinner exerciseSpinner;
     EditText typeInput;
+    boolean notificationTriggered = false;
     Button update;
     Button summary;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db;
+    String TAG = "Update";
 
     private String formatDate(int year, int month, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();
@@ -49,6 +61,8 @@ public class Update extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        createNotificationChannel(this);
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.update);
@@ -64,6 +78,73 @@ public class Update extends AppCompatActivity {
         exerciseSpinner = findViewById(R.id.exerciseSelectionSpinner);
         db = FirebaseFirestore.getInstance();
         typeInput = findViewById(R.id.timeInputEditText);
+            final DocumentReference docRef = db.collection("notifications").document("notice");
+            docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                    @Nullable FirebaseFirestoreException e) {
+                    if (snapshot != null && snapshot.exists()) {
+                        String source = snapshot.getMetadata().hasPendingWrites() ? "Local" : "Server";
+                        String data = formatString(Objects.requireNonNull(snapshot.getData()).toString());
+
+                        // Output the change to the console
+                        Log.d(TAG, source + " data: " + snapshot.getData());
+
+                        // Update the TextView with the latest data
+//                    textView = findViewById(R.id.textInScrollView);
+//                    textView.setText(data);
+                        if (notificationTriggered) {
+                            triggerNotification(Update.this, getTitle(data), getMessage(data));
+                            Log.d("CONTENTS", data);
+                        }
+                        else
+                            notificationTriggered = true;
+                    } else {
+                        Log.d(TAG, "Document snapshot is null or doesn't exist");
+                    }
+                }
+
+                public String formatString(String input) {
+                    // Remove curly braces
+                    String parsedString = input.replaceAll("[{}]", "");
+
+                    // Replace '=' and '~' with new line characters
+                    parsedString = parsedString.replaceAll("[=~]", "\n");
+                    parsedString = parsedString.replaceAll(",", "\n\n");
+
+                    return parsedString;
+                }
+
+                public String getTitle(String input) {
+                    // Remove curly braces
+
+                    // The title is between the first and second line
+                    String[] lines = input.split("\n");
+                    if (lines.length < 2) {
+                        return "No title";
+                    }
+
+                    String title = lines[1];
+                    Log.d("TITLE", title);
+
+                    return title;
+                }
+
+                public String getMessage(String input) {
+                    // Remove curly braces
+
+                    // The title is between the first and second line
+                    String[] lines = input.split("\n");
+                    if (lines.length < 2) {
+                        return "No title";
+                    }
+
+                    String title = lines[2];
+                    Log.d("TITLE", title);
+
+                    return title;
+                }
+            });
 
         // Set a listener to get the selected date
         date.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
