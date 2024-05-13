@@ -97,6 +97,7 @@ public class Stats extends AppCompatActivity {
 
     // Function to handle the second stat type selection
 // Function to handle the second stat type selection
+    // Function to handle the second stat type selection
     private void handleSecondStatType() {
         // Clear existing text in the TextView
         body.setText("");
@@ -138,8 +139,10 @@ public class Stats extends AppCompatActivity {
 
             // Prepare the output text with the results
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("Date with Highest Value: ").append(highestDate).append(", Value: ").append(highestValue).append("\n");
-            stringBuilder.append("Date with Lowest Value: ").append(lowestDate).append(", Value: ").append(lowestValue).append("\n");
+            stringBuilder.append("Date with Most Hours: ").append(highestDate).append(", Hours: ").append(highestValue).append("\n");
+            stringBuilder.append("----------------------------------------\n");
+            stringBuilder.append("Date with Lowest Hours: ").append(lowestDate).append(", Hours: ").append(lowestValue).append("\n");
+            stringBuilder.append("----------------------------------------\n");
             stringBuilder.append("Average Value: ").append(averageValue);
 
             // Set the text of the TextView to the accumulated string
@@ -151,8 +154,34 @@ public class Stats extends AppCompatActivity {
     // Function to handle the third stat type selection
     private void handleThirdStatType() {
         // Clear existing text in the TextView
-        body.setText("Third Stat Type Selected");
-        // Implement your logic for the third stat type here
-        // You can customize this to display specific information or perform actions
+        body.setText("");
+
+        // Check if dateValueMap is not null and not empty
+        if (dateValueMap != null && !dateValueMap.isEmpty()) {
+            // Initialize variables to calculate overall sum and count of unique dates
+            float overallSum = 0;
+            int uniqueDateCount = dateValueMap.size();
+
+            // Calculate overall sum of aggregated values
+            for (float aggregatedValue : dateValueMap.values()) {
+                overallSum += aggregatedValue;
+            }
+
+            // Calculate average value per date
+            float averageValuePerDate = overallSum / uniqueDateCount;
+
+            // Prepare the output text with the results
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("Overall Sum of hours exercised: ").append(overallSum).append("\n");
+            stringBuilder.append("----------------------------------------\n");
+            stringBuilder.append("Number of days exercised: ").append(uniqueDateCount).append("\n");
+            stringBuilder.append("----------------------------------------\n");
+            stringBuilder.append("Average hours per Date: ").append(averageValuePerDate);
+
+            // Set the text of the TextView to the accumulated string
+            body.setText(stringBuilder.toString());
+        }
     }
+
+
 }

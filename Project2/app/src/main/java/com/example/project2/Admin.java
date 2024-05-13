@@ -53,7 +53,10 @@ public class Admin extends AppCompatActivity {
     Spinner user;
     Button jump;
     Button notificationsButton;
+    Button showstats;
     ArrayAdapter<String> userAdapter;
+    private Map<String, Float> dateValueMap = new HashMap<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +118,20 @@ public class Admin extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        showstats=findViewById(R.id.statsButton);
+        showstats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String selectedExerciseType = exercise.getSelectedItem().toString(); // Get the selected exercise type
+                Intent statsIntent = new Intent(Admin.this, Stats.class);
+
+                // Pass exercise type and dateValueMap to StatsActivity
+                statsIntent.putExtra("exerciseType", selectedExerciseType);
+                statsIntent.putExtra("dateValueMap", new HashMap<>(dateValueMap)); // Pass a copy to avoid modifications
+
+                startActivity(statsIntent);
+            }
+        });
     }
 
     private void populateUserSpinner() {
@@ -141,7 +158,7 @@ public class Admin extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Map<String, Float> dateValueMap = new HashMap<>();
+                         dateValueMap.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String date = document.getString("date");
                             String valueStr = document.getString("value");

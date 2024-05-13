@@ -27,7 +27,7 @@
         android:id="@+id/jumptouser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="560dp"
         android:text="Jump to User Page"
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -54,16 +54,16 @@
     <Spinner
         android:id="@+id/user"
         android:layout_width="117dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="216dp"
-        android:layout_marginTop="416dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="224dp"
+        android:layout_marginTop="476dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Title" />
 
     <Spinner
         android:id="@+id/activity"
         android:layout_width="117dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="28dp"
         android:entries="@array/workouts"
@@ -82,12 +82,12 @@
     <Button
         android:id="@+id/jump"
         android:layout_width="183dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="114dp"
-        android:layout_marginTop="22dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="19dp"
+        android:backgroundTint="@color/deep_purple"
         android:text="Jump to User"
         android:textColor="@color/white"
-        android:backgroundTint="@color/deep_purple"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user" />
 
@@ -95,12 +95,27 @@
         android:id="@+id/goToNotificationsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/orange"
         android:text=" Push Notification"
         android:textColor="@color/white"
-        android:backgroundTint="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/jump" />
+        app:layout_constraintTop_toBottomOf="@+id/jump"
+        app:layout_constraintVertical_bias="0.783" />
+
+    <Button
+        android:id="@+id/statsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:text="Stats"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chart" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
