@@ -140,12 +140,14 @@ public class Admin extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Map<String, Float> dateValueMap = new HashMap<>();
+                        int documentCount = 0; // To count the number of documents
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String date = document.getString("date");
                             String valueStr = document.getString("value");
                             float value = Float.parseFloat(valueStr);
 
+                            // Accumulate values for each date
                             if (dateValueMap.containsKey(date)) {
                                 float currentValue = dateValueMap.get(date);
                                 dateValueMap.put(date, currentValue + value);
@@ -153,22 +155,29 @@ public class Admin extends AppCompatActivity {
                                 dateValueMap.put(date, value);
                             }
 
+                            documentCount++; // Increment document count
                             Log.d("FirestoreData", "Date: " + date + ", Exercise Type: " + exercise + ", Value: " + value);
                         }
 
-                        List<Entry> entries1 = new ArrayList<>();
+                        List<Entry> entries = new ArrayList<>();
                         List<String> dates = new ArrayList<>();
 
                         int index = 0;
                         for (String date : dateValueMap.keySet()) {
                             float aggregatedValue = dateValueMap.get(date);
+
+                            // Calculate average value before adding to entry
+                            if (documentCount > 0) {
+                                aggregatedValue /= documentCount;
+                            }
+
                             Entry entry = new Entry(index, aggregatedValue);
-                            entries1.add(entry);
+                            entries.add(entry);
                             dates.add(date);
                             index++;
                         }
 
-                        configureChart(entries1, dates); // Update chart with new data
+                        configureChart(entries, dates); // Update chart with new data
                     } else {
                         Log.e("FirestoreData", "Error getting documents: ", task.getException());
                     }
@@ -191,56 +200,16 @@ public class Admin extends AppCompatActivity {
 
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(24f);
+        yAxis.setAxisMaximum(12f);
         yAxis.setAxisLineWidth(2f);
         yAxis.setAxisLineColor(Color.BLACK);
         yAxis.setLabelCount(15);
 
         LineDataSet dataSet1 = new LineDataSet(entries1, "Work");
-        dataSet1.setColor(Color.BLUE);
+        dataSet1.setColor(Color.RED);
 
         LineData lineData = new LineData(dataSet1);
         lineChart.setData(lineData);
         lineChart.invalidate();
     }
 }
-//lineChart = findViewById(R.id.chart);
-//        Description description = new Description();
-//        description.setText("Students Record");
-//        description.setPosition(150f, 15f);
-//        lineChart.setDescription(description);
-//        lineChart.getAxisRight().setDrawLabels(false);
-//        XAxis xAxis = lineChart.getXAxis();
-//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xvalue = Arrays.asList("Nadon", "Kamal", "John");
-//        xAxis.setValueFormatter(new IndexAxisValueFormatter(xvalue));
-//        xAxis.setLabelCount(3);
-//        xAxis.setGranularity(1f);
-//        YAxis yAxis = lineChart.getAxisLeft();
-//        yAxis.setAxisMinimum(0f);
-//        yAxis.setAxisMaximum(100f);
-//        yAxis.setAxisLineWidth(2f);
-//        yAxis.setAxisLineColor(Color.BLACK);
-//        yAxis.setLabelCount(15);
-//
-//        List<Entry> entries1 = new ArrayList<>();
-//        entries1.add(new Entry(0, 10f));
-//        entries1.add(new Entry(1, 10f));
-//        entries1.add(new Entry(2, 35f));
-//        entries1.add(new Entry(3, 45f));
-//
-//        List<Entry> entries2 = new ArrayList<>();
-//        entries2.add(new Entry(0, 5f));
-//        entries2.add(new Entry(1, 15f));
-//        entries2.add(new Entry(2, 20f));
-//        entries2.add(new Entry(3, 30f));
-//
-//        LineDataSet dataSet1 = new LineDataSet(entries1, "Maths");
-//        dataSet1.setColor(Color.BLUE);
-//        LineDataSet dataSet2 = new LineDataSet(entries2, "Science");
-//        dataSet2.setColor(Color.RED);
-//
-//        LineData lineData = new LineData(dataSet1, dataSet2);
-//        lineChart.setData(lineData);
-//        lineChart.invalidate();
-

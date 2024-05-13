@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_blue_A200"
-    tools:context=".MainActivity">
+    >
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="96dp"
         android:text="@string/welcome"
         android:textColor="@color/white"
-        android:textSize="30sp"
+        android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,10 +26,11 @@
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="48dp"
         android:contentDescription="@string/image_of_two_women_exercising"
         app:layout_constraintDimensionRatio="H,3:2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:srcCompat="@drawable/title" />
@@ -39,24 +39,30 @@
         android:id="@+id/createAccountButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="112dp"
         android:layout_marginEnd="8dp"
         android:text="@string/create_account"
-        app:layout_constraintEnd_toStartOf="@+id/mainLoginButton"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/light_blue_600"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintEnd_toStartOf="@+id/mainLoginButton"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        />
 
     <Button
         android:id="@+id/mainLoginButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="112dp"
         android:layout_marginEnd="32dp"
         android:text="@string/log_in"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/light_blue_900"
         app:layout_constraintStart_toEndOf="@+id/createAccountButton"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

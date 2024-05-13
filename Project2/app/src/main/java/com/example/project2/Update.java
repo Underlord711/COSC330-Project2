@@ -60,7 +60,7 @@ public class Update extends AppCompatActivity {
 
         update = findViewById(R.id.updateDataButton);
         summary=findViewById(R.id.gotoSummary);
-        date = findViewById(R.id.calendarView4);
+        date = findViewById(R.id.calendarView);
         exerciseSpinner = findViewById(R.id.exerciseSelectionSpinner);
         db = FirebaseFirestore.getInstance();
         typeInput = findViewById(R.id.timeInputEditText);
@@ -88,6 +88,7 @@ public class Update extends AppCompatActivity {
 
                 // Write data to Firestore
                 writeDataToFirestore(userEmail, selectedDate, exerciseType, value);
+                typeInput.setText("");
                 summary.setVisibility(View.VISIBLE);
                 summary.setEnabled(true);
 

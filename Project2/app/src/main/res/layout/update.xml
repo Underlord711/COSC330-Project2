@@ -1,89 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@color/background">
+    android:background="@color/light_blue_A200">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/updateInfoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/update_information"
         android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.052" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
 
     <Button
         android:id="@+id/updateDataButton"
         android:layout_width="237dp"
         android:layout_height="65dp"
-        android:layout_marginStart="84dp"
-        android:layout_marginBottom="128dp"
+        android:layout_marginTop="16dp"
+        android:elevation="4dp"
         android:text="@string/update_data"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
     <Spinner
         android:id="@+id/exerciseSelectionSpinner"
         android:layout_width="152dp"
         android:layout_height="68dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="288dp"
+        android:layout_marginTop="17dp"
+        android:backgroundTint="@color/white"
         android:entries="@array/workouts"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
+        app:layout_constraintTop_toBottomOf="@+id/updateInfoTextView" />
 
     <EditText
         android:id="@+id/timeInputEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
         android:ems="10"
         android:inputType="text"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.674"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exerciseSelectionSpinner" />
-
-    <CalendarView
-        android:id="@+id/calendarView4"
-        android:layout_width="330dp"
-        android:layout_height="271dp"
-        android:layout_marginStart="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@id/exerciseSelectionSpinner"
+        android:hint="Enter as decimal value"/>
 
     <TextView
-        android:id="@+id/textView5"
-        android:layout_width="76dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="224dp"
+        android:id="@+id/timeLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginBottom="8dp"
         android:text="Time (hours)"
+        android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/timeInputEditText" />
+        app:layout_constraintBottom_toBottomOf="@id/timeInputEditText"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/timeInputEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
 
     <Button
         android:id="@+id/gotoSummary"
         android:layout_width="237dp"
         android:layout_height="65dp"
-        android:layout_marginTop="47dp"
-        android:layout_marginEnd="87dp"
-        android:text="@string/select_Summary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/updateDataButton"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/light_blue_900"
         android:enabled="false"
-        android:visibility="invisible"/>
+        android:text="@string/select_Summary"
+        android:textColor="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calendarView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

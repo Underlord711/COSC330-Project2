@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/background">
+    android:background="@color/light_blue_A200">
 
     <TextView
         android:id="@+id/Title"
@@ -22,17 +22,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/jumptouser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="556dp"
+        android:layout_marginTop="500dp"
         android:text="Jump to User Page"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.126"
+        app:layout_constraintHorizontal_bias="0.067"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,7 +41,7 @@
         android:id="@+id/activitysummary"
         android:layout_width="195dp"
         android:layout_height="70dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="120dp"
         android:text="Select Activity to see summary"
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -50,13 +51,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <Spinner
         android:id="@+id/user"
         android:layout_width="117dp"
         android:layout_height="45dp"
-        android:layout_marginStart="224dp"
-        android:layout_marginTop="476dp"
+        android:layout_marginStart="216dp"
+        android:layout_marginTop="416dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Title" />
 
@@ -86,6 +86,8 @@
         android:layout_marginStart="114dp"
         android:layout_marginTop="22dp"
         android:text="Jump to User"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/deep_purple"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user" />
 
@@ -93,11 +95,12 @@
         android:id="@+id/goToNotificationsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Notifications"
+        android:text=" Push Notification"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/jump" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

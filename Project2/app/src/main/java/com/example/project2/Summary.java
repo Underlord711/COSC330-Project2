@@ -151,13 +151,13 @@ public class Summary extends AppCompatActivity {
 
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(24f);
+        yAxis.setAxisMaximum(12f);
         yAxis.setAxisLineWidth(2f);
         yAxis.setAxisLineColor(Color.BLACK);
         yAxis.setLabelCount(15);
 
         LineDataSet dataSet1 = new LineDataSet(entries1, "Work");
-        dataSet1.setColor(Color.BLUE);
+        dataSet1.setColor(Color.RED);
 
         LineData lineData = new LineData(dataSet1);
         lineChart.setData(lineData);
