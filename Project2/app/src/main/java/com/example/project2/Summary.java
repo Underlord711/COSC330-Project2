@@ -42,6 +42,7 @@ public class Summary extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     String email;
+    Button summary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,17 @@ public class Summary extends AppCompatActivity {
                 // Handle nothing selected if needed
             }
         });
+        summary=findViewById(R.id.stats);
+        summary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String selectedExerciseType = exercise.getSelectedItem().toString(); // Get the selected exercise type
+                Intent statsIntent = new Intent(Summary.this, Stats.class);
+                statsIntent.putExtra("exerciseType", selectedExerciseType); // Pass exercise type to StatsActivity
+                startActivity(statsIntent);
+            }
+        });
+
     }
 
     private void retrieveAndOutputData(String exercise) {
