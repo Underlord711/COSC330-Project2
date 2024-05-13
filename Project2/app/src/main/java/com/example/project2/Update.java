@@ -83,18 +83,28 @@ public class Update extends AppCompatActivity {
                 String exerciseType = exerciseSpinner.getSelectedItem().toString();
                 String value = typeInput.getText().toString();
 
-                // Get current user's email
-                String userEmail = mAuth.getCurrentUser().getEmail();
+                // Validate the input value
+                try {
+                    // Attempt to parse the input value into a float
+                    float floatValue = Float.parseFloat(value);
 
-                // Write data to Firestore
-                writeDataToFirestore(userEmail, selectedDate, exerciseType, value);
-                typeInput.setText("");
-                summary.setVisibility(View.VISIBLE);
-                summary.setEnabled(true);
+                    // If parsing is successful, proceed to write data to Firestore
+                    String userEmail = mAuth.getCurrentUser().getEmail();
+                    writeDataToFirestore(userEmail, selectedDate, exerciseType, value);
 
+                    // Clear the input field after successful write
+                    typeInput.setText("");
 
+                    // Show/hide UI elements as needed
+                    summary.setVisibility(View.VISIBLE);
+                    summary.setEnabled(true);
+                } catch (NumberFormatException e) {
+                    // Display a toast message indicating invalid time format
+                    Toast.makeText(getApplicationContext(), "Invalid time format", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
         summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
