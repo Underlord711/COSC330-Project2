@@ -1,8 +1,4 @@
 <resources>
-<<<<<<< HEAD
-=======
-    <dimen name="activity_horizontal_margin">48dp</dimen>
->>>>>>> 7a4ab1d (Notificatinos)
     <dimen name="fab_margin">48dp</dimen>
     <dimen name="text_margin">48dp</dimen>
 </resources>

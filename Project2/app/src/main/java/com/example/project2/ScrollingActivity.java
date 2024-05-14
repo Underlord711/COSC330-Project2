@@ -1,19 +1,15 @@
 package com.example.project2;
 
-<<<<<<< HEAD
 import static com.example.project2.NotificationHelper.createNotificationChannel;
 import static com.example.project2.NotificationHelper.triggerNotification;
 
 import android.content.Intent;
-=======
->>>>>>> 7a4ab1d (Notificatinos)
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-<<<<<<< HEAD
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -32,34 +28,20 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-=======
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.View;
-
-import com.example.project2.databinding.ActivityScrollingBinding;
->>>>>>> 7a4ab1d (Notificatinos)
 
 public class ScrollingActivity extends AppCompatActivity {
 
     private ActivityScrollingBinding binding;
-<<<<<<< HEAD
     TextView textView;
     String TAG = "FIREBASE";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     boolean notificationTriggered = false;
 
-=======
->>>>>>> 7a4ab1d (Notificatinos)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
         createNotificationChannel(this); // Create notification channel
-=======
->>>>>>> 7a4ab1d (Notificatinos)
 
         binding = ActivityScrollingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -73,7 +55,6 @@ public class ScrollingActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-<<<<<<< HEAD
                 // Take user to message composition activity
                 Intent intent = new Intent(ScrollingActivity.this, CreateNotificationActivity.class);
                 startActivity(intent);
@@ -151,12 +132,5 @@ public class ScrollingActivity extends AppCompatActivity {
         Log.d("TITLE", title);
 
         return title;
-=======
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .setAnchorView(R.id.fab).show();
-            }
-        });
->>>>>>> 7a4ab1d (Notificatinos)
     }
 }
