@@ -15,6 +15,7 @@
     <style name="Theme.Project2.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Project2.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+<<<<<<< HEAD
 
     <style name="Theme.Project2.Fullscreen" parent="Theme.Project2">
         <item name="android:actionBarStyle">@style/Widget.Theme.Project2.ActionBar.Fullscreen</item>
@@ -26,4 +27,6 @@
         <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
         <item name="fullscreenTextColor">@color/light_blue_A200</item>
     </style>
+=======
+>>>>>>> 7a4ab1d (Notificatinos)
 </resources>
