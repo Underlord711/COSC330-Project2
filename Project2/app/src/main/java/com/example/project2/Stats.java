@@ -6,9 +6,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import java.util.*;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 public class Stats extends AppCompatActivity {
@@ -73,16 +78,35 @@ public class Stats extends AppCompatActivity {
     }
 
     // Function to handle the first stat type selection
+
+
     private void handleFirstStatType() {
         // Clear existing text in the TextView
         body.setText("");
 
         // Check if dateValueMap is not null and not empty
         if (dateValueMap != null && !dateValueMap.isEmpty()) {
+            // Convert dateValueMap entries to a list for sorting
+            List<Map.Entry<String, Float>> entryList = new ArrayList<>(dateValueMap.entrySet());
+
+            // Sort the entryList based on the date (String key)
+            Collections.sort(entryList, new Comparator<Map.Entry<String, Float>>() {
+                @Override
+                public int compare(Map.Entry<String, Float> entry1, Map.Entry<String, Float> entry2) {
+                    // Parse dates and compare them
+                    String date1 = entry1.getKey();
+                    String date2 = entry2.getKey();
+
+                    // Assuming date format is "yyyy-MM-dd", you can parse and compare dates
+                    return date1.compareTo(date2);
+                }
+            });
+
+            // Prepare the sorted entries for display
             StringBuilder stringBuilder = new StringBuilder();
 
-            // Iterate through each entry in the dateValueMap
-            for (Map.Entry<String, Float> entry : dateValueMap.entrySet()) {
+            // Iterate through sorted entries
+            for (Map.Entry<String, Float> entry : entryList) {
                 String date = entry.getKey();
                 float aggregatedValue = entry.getValue();
 
@@ -94,6 +118,7 @@ public class Stats extends AppCompatActivity {
             body.setText(stringBuilder.toString());
         }
     }
+
 
     // Function to handle the second stat type selection
 // Function to handle the second stat type selection

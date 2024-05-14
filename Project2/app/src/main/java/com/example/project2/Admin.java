@@ -225,7 +225,7 @@ public class Admin extends AppCompatActivity {
         yAxis.setAxisLineColor(Color.BLACK);
         yAxis.setLabelCount(15);
 
-        LineDataSet dataSet1 = new LineDataSet(entries1, "Work");
+        LineDataSet dataSet1 = new LineDataSet(entries1, "Work (Avg)");
         dataSet1.setColor(Color.RED);
 
         LineData lineData = new LineData(dataSet1);
